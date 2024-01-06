@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to LakShop store where you can buy different items...
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ category.name }} - LakShop store
+    {% else %}
+        See our New collections - LakShop store
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    {% if category %}
+
+    <div>
+        <div class="row my_class">
+            <div class="ms-auto">
+            <p><a href="{% url 'shop:allProduct' %}">Our Product Collections</a></p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="mx_auto">
+        {% if category %}
+            <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+    </div>
+        <br>
+    <div>
+            <h1 class="text-center my_title">{{category.name}}</h1>
+            <p class="text-justify" >{{category.description}}</p>
+    </div>
+        {% else %}
+    <div>
+        <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="our products" width="1250px;" >
+    </div>
+    <br>
+<div>
+    <h1 class="text-center my_title" >Our Products Collections</h1>
+    <p class="text-justify" >It was originally taken from a Latin text written by a Roman Scholar, Sceptic and Philosopher by the name of Marcus Tullius Cicero, who influenced the Latin language greatly.
+
+The "filler" text we know today has been altered over the years (in fact "Lorem" isn't actually a Latin word. It is suggested that the reason that the text starts with "Lorem" is because there was a page break spanning the word "Do-lorem". If you a re looking for a translation of the text, it's meaningless. The original text talks about the pain and love involved in the pursuit of pleasure or something like that.
+
+The reason we use Lorem Ipsum is simple. If we used real text, it would possibly distract from the DESIGN of a page (or indeed, might even be mistakenly inappropriate. Or if we used something like "Insert Text Here...", this would also distract from the design. Using Lorem Ipsum allows us to SEE the design without being distracted by readable or unrealistic text.</p>
+</div>
+        {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx_auto">
+        {% if productd.paginator.num_pages > 1 %}
+
+
+       <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href=" ?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+         {% endif %}
+    </div>
+    <br>
+</div>
+
+{% endblock %}
